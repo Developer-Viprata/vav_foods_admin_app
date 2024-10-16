@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vav_foods_admin_app/Data/models/user_model.dart';
-
 import '../interfaces/interfaces.dart';
 
 class UsersServices implements Interfaces {
@@ -22,5 +21,20 @@ class UsersServices implements Interfaces {
       print("Error in fetching users: $e");
     }
     return userList;
+  }
+
+  @override
+  Future<UserModel?> fetchsingleUserFromFirebase(String userId) async {
+    try {
+      DocumentSnapshot userDoc =
+          await firebaseFirestore.collection('users').doc(userId).get();
+
+      if (userDoc.exists) {
+        return UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+      }
+    } catch (e) {
+      print("Error fetching single user: $e");
+    }
+    return null; //it will return null if there is no user
   }
 }

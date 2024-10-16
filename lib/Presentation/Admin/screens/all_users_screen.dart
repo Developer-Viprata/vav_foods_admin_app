@@ -27,7 +27,9 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         title: 'All Users Screen',
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(AppRoutes.addUserScreen);
+              },
               icon: Icon(
                 Icons.add,
                 color: AppColors.background,
@@ -44,12 +46,14 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
             child: MyText(text: 'No users found'),
           );
         }
+
         return ListView.builder(
           itemCount: allUsersController.usersList.length,
           itemBuilder: (context, index) {
             final user = allUsersController.usersList[index];
             return ListTile(
               onTap: () {
+                allUsersController.selectUser(user);
                 Get.toNamed(AppRoutes.singleUserDetailsScreen);
               },
               title: Text(user.fullName),
@@ -77,7 +81,11 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                   ),
                   IconButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.singleUserDetailsScreen);
+                      allUsersController.selectUser(user);
+                      Get.toNamed(
+                        AppRoutes.singleUserDetailsScreen,
+                        arguments: user,
+                      );
                     },
                     icon: Icon(
                       Icons.edit,

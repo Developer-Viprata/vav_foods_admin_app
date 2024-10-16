@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../Data/models/user_model.dart';
@@ -11,6 +12,12 @@ class AllUsersController extends GetxController {
 
   final isLoading = false.obs;
   final usersList = <UserModel>[].obs;
+
+  //adding for to select single user
+  var selectedUser = Rxn<UserModel>();
+
+  final TextEditingController userFullName = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
@@ -27,5 +34,10 @@ class AllUsersController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Set the selected user
+  void selectUser(UserModel user) {
+    selectedUser.value = user;
   }
 }

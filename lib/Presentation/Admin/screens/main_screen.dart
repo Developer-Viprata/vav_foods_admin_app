@@ -15,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: MyDrawer(),
+        drawer: const MyDrawer(),
         appBar: MyAppBar(title: 'Main Screen'),
         body: SingleChildScrollView(
           child: MyText(text: 'MainScreen'),
