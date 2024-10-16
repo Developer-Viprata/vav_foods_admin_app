@@ -47,11 +47,13 @@ class CustomTextFormField extends StatelessWidget {
         onSaved: onSaved,
         maxLines: maxLines ?? 1,
         textInputAction: textInputAction,
-        cursorColor: primarygreen,
+        cursorColor: AppColors.primarygreen,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: const TextStyle(color: textcolor),
+          labelStyle: TextStyle(
+            color: AppColors.textcolor,
+          ),
           suffixIcon: suffixIcon,
           label: label,
           prefixIcon: prefixIcon,
@@ -68,13 +70,13 @@ class CustomTextFormField extends StatelessWidget {
               color: grey,
             ),
           ), */
-          focusedBorder: const UnderlineInputBorder(
+          focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: textcolor,
+              color: AppColors.textcolor,
             ),
           ),
 
-          focusColor: textcolor,
+          focusColor: AppColors.textcolor,
 
           //
         ),
