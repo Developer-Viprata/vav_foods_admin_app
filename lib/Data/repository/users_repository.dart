@@ -13,4 +13,24 @@ class UsersRepository {
   Future<UserModel?> fetchsingleUserFromFirebase(String userId) async {
     return await interfaces.fetchsingleUserFromFirebase(userId);
   }
+
+  Future<List<UserModel>> addUsersToFirebase(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  ) async {
+    return await interfaces.addUsersToFirebase(
+      fullName,
+      email,
+      phoneNumber,
+      password,
+      role,
+    );
+  }
+
+  Future<List<UserModel>> deleteUser(String userId) async {
+    return await interfaces.deleteUser(userId);
+  }
 }

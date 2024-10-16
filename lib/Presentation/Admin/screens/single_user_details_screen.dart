@@ -39,6 +39,8 @@ class SingleUserDetailsScreen extends StatelessWidget {
               const SizedBox(height: 10),
               MyText(text: 'Phone: ${user.phoneNumber}'),
               const SizedBox(height: 10),
+              MyText(text: 'isActive: ${user.isActive}'),
+              const SizedBox(height: 10),
               MyText(text: 'Role: ${user.role.toString().split('.').last}'),
               const SizedBox(height: 10),
               MyText(text: 'Created At: ${user.createdAt}'),
