@@ -25,12 +25,12 @@ class _MyAppBarState extends State<MyAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       leading: widget.leading,
-      iconTheme: const IconThemeData(color: background),
-      backgroundColor: primarygreen,
+      iconTheme: IconThemeData(color: AppColors.background),
+      backgroundColor: AppColors.primarygreen,
       centerTitle: true,
       title: MyText(
         text: widget.title,
-        color: background,
+        color: AppColors.background,
         fontWeight: FontWeight.w500,
       ),
       actions: widget.actions,

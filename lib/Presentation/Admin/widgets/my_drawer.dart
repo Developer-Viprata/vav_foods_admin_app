@@ -14,8 +14,8 @@ class MyDrawer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 15, bottom: 25),
       child: Drawer(
-        backgroundColor: primarygreen,
-        shape: RoundedRectangleBorder(
+        backgroundColor: AppColors.primarygreen,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20),
             bottomLeft: Radius.circular(20),
@@ -33,18 +33,18 @@ class MyDrawer extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
                   text: "Vav Foods Admin",
-                  color: white,
+                  color: AppColors.background,
                 ),
                 subtitle: MyText(
                   text: "Version 1.0.1",
-                  color: white,
+                  color: AppColors.background,
                 ),
                 leading: CircleAvatar(
                   radius: 22,
-                  backgroundColor: background,
+                  backgroundColor: AppColors.background,
                   child: MyText(
                     text: "V",
-                    color: secondary,
+                    color: AppColors.background,
                   ),
                 ),
               ),
@@ -64,11 +64,11 @@ class MyDrawer extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
                   text: "Home",
-                  color: white,
+                  color: AppColors.background,
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.home,
-                  color: white,
+                  color: AppColors.background,
                 ),
               ),
             ),
@@ -83,11 +83,11 @@ class MyDrawer extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
                   text: "Users",
-                  color: white,
+                  color: AppColors.background,
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.group,
-                  color: white,
+                  color: AppColors.background,
                 ),
                 /* trailing: Icon(
                   Icons.arrow_forward,
@@ -150,11 +150,11 @@ class MyDrawer extends StatelessWidget {
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
                   text: "Logout",
-                  color: white,
+                  color: AppColors.background,
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.logout,
-                  color: white,
+                  color: AppColors.background,
                 ),
               ),
             ),
