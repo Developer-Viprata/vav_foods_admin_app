@@ -1,17 +1,17 @@
 enum UserRole { Customer, Fulfillment, Delivery, Admin }
 
 class UserModel {
-  String userId;
-  String fullName;
-  String email;
-  String phoneNumber;
-  String password;
-  UserRole role;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String userDeviceToken;
-  String userImg;
-  bool isActive;
+  final String userId;
+  final String fullName;
+  final String email;
+  final String phoneNumber;
+  final String password;
+  final UserRole role;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String userDeviceToken;
+  final String userImg;
+  final bool isActive;
 
   UserModel({
     required this.userId,
