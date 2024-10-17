@@ -71,10 +71,18 @@ class UsersServices implements Interfaces {
       );
 
       // Save user data in Firestore
-      await firebaseFirestore
+      /* await firebaseFirestore
           .collection('users')
           .doc(newUser.userId)
-          .set(newUser.toMap());
+          .set(newUser.toMap()); */
+      // Save user data in Firestore with server-side timestamps
+      await firebaseFirestore.collection('users').doc(newUser.userId).set({
+        ...newUser.toMap(),
+        'createdAt':
+            FieldValue.serverTimestamp(), // Use Firestore server timestamp
+        'updatedAt':
+            FieldValue.serverTimestamp(), // Use Firestore server timestamp
+      });
 
       // Fetch updated list of users from Firestore
       userList = await fetchUsersFromFirebase();
@@ -83,69 +91,6 @@ class UsersServices implements Interfaces {
     }
     return userList;
   }
-/* 
-
-  @override
-  Future<List<UserModel>> updateUserFromFirebase(
-    String fullName,
-    String email,
-    String phoneNumber,
-    String password,
-    UserRole role,
-  ) async {
-    List<UserModel> userList = [];
-    try {
-      // Get reference to user in Firestore
-      final DocumentReference userDoc = firebaseFirestore
-          .collection('users')
-          .doc(firebaseAuth.currentUser!.uid);
-
-      final UserModel userModel = UserModel(
-        userId: firebaseAuth.currentUser!.uid,
-        fullName: fullName,
-        email: email,
-        phoneNumber: phoneNumber,
-        password: password,
-        role: role,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        userDeviceToken: '',
-        userImg: '',
-      );
-
-      // Update Firestore fields
-      await userDoc.update({
-        'fullName': fullName,
-        'email': email,
-        'password': password,
-        'phoneNumber': phoneNumber,
-        'role': role.toString().split('.').last,
-        'updatedAt': DateTime.now(),
-        'userImg': '',
-      });
-
-      // If the email or password has changed, update Firebase Authentication
-      final User? currentUser = firebaseAuth.currentUser;
-      if (currentUser != null &&
-          currentUser.uid == firebaseAuth.currentUser!.uid) {
-        if (email != currentUser.email) {
-          await currentUser.updateEmail(email);
-        }
-        if (password.isNotEmpty) {
-          await currentUser.updatePassword(password);
-        }
-      }
-
-      // Fetch updated list of users from Firestore
-      userList = await fetchUsersFromFirebase();
-    } catch (e) {
-      print("Error updating user: $e");
-    }
-    return userList;
-  }
-
-
- */
 
   @override
   Future<List<UserModel>> updateUserFromFirebase(
@@ -177,9 +122,15 @@ class UsersServices implements Interfaces {
 
       Map<String, dynamic> existingUserData =
           existingUserDoc.data() as Map<String, dynamic>;
-      final DateTime
-          createdAt; /* =
-          (existingUserData['createdAt'] as Timestamp).toDate(); */
+      DateTime createdAt; // Check if createdAt is a Timestamp or a String
+      if (existingUserData['createdAt'] is Timestamp) {
+        createdAt = (existingUserData['createdAt'] as Timestamp).toDate();
+      } else if (existingUserData['createdAt'] is String) {
+        createdAt = DateTime.parse(
+            existingUserData['createdAt']); // Convert String to DateTime
+      } else {
+        throw Exception("Invalid createdAt format.");
+      }
 
       // Prepare updated user model
       final UserModel updatedUserModel = UserModel(
@@ -189,7 +140,7 @@ class UsersServices implements Interfaces {
         phoneNumber: phoneNumber,
         password: password,
         role: role,
-        createdAt: DateTime.now(), // Retain original createdAt timestamp
+        createdAt: createdAt, // Retain original createdAt timestamp
         updatedAt: DateTime.now(), // Update the updatedAt timestamp
         userDeviceToken: '',
         userImg: '',

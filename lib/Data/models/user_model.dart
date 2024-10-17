@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 enum UserRole { Customer, Fulfillment, Delivery, Admin }
 
 class UserModel {
@@ -52,8 +54,12 @@ class UserModel {
       password: map['password'] ?? '',
       role: UserRole.values
           .firstWhere((e) => e.toString().split('.').last == map['role']),
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: DateTime.parse(map['updatedAt']),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate()
+          : DateTime.parse(map['createdAt']),
+      updatedAt: map['updatedAt'] is Timestamp
+          ? (map['updatedAt'] as Timestamp).toDate()
+          : DateTime.parse(map['updatedAt']),
       userDeviceToken: map['userDeviceToken'] ?? '',
       userImg: map['userImg'] ?? '',
       isActive: map['isActive'] ?? true,

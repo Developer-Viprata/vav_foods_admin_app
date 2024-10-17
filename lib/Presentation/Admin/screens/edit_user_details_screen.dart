@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../../Constants/colors.dart';
 import '../../../Controllers/all_users_controller.dart';
 import '../../../Data/models/user_model.dart';
-import '../../../Routes/routes.dart';
 import '../widgets/my_app_bar.dart';
 import '../widgets/my_button.dart';
 import '../widgets/my_text.dart';
@@ -129,7 +128,7 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
                           allUsersController.selectedRole.value,
                         );
 
-                        Get.toNamed(AppRoutes.allUsersScreen);
+                        // Get.toNamed(AppRoutes.allUsersScreen);
                       },
                       text: 'Update user'),
                 ],
