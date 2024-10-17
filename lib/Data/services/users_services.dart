@@ -177,8 +177,9 @@ class UsersServices implements Interfaces {
 
       Map<String, dynamic> existingUserData =
           existingUserDoc.data() as Map<String, dynamic>;
-      DateTime createdAt =
-          (existingUserData['createdAt'] as Timestamp).toDate();
+      final DateTime
+          createdAt; /* =
+          (existingUserData['createdAt'] as Timestamp).toDate(); */
 
       // Prepare updated user model
       final UserModel updatedUserModel = UserModel(
@@ -188,7 +189,7 @@ class UsersServices implements Interfaces {
         phoneNumber: phoneNumber,
         password: password,
         role: role,
-        createdAt: createdAt, // Retain original createdAt timestamp
+        createdAt: DateTime.now(), // Retain original createdAt timestamp
         updatedAt: DateTime.now(), // Update the updatedAt timestamp
         userDeviceToken: '',
         userImg: '',
