@@ -21,7 +21,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       backgroundColor: AppColors.background,
       appBar: MyAppBar(
         title: 'All Users Screen',
@@ -48,51 +48,73 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         }
 
         return ListView.builder(
+          physics: const BouncingScrollPhysics(),
           itemCount: allUsersController.usersList.length,
           itemBuilder: (context, index) {
             final user = allUsersController.usersList[index];
-            return ListTile(
-              onTap: () {
-                allUsersController.selectUser(user);
-                Get.toNamed(AppRoutes.singleUserDetailsScreen);
-              },
-              title: Text(user.fullName),
-              subtitle: Text(user.email),
-              leading: CircleAvatar(
-                backgroundColor: AppColors.secondary,
-                child: Text(
-                  user.fullName.isNotEmpty
-                      ? user.fullName[0].toUpperCase()
-                      : '',
-                  style: TextStyle(
-                    color: AppColors.background,
-                  ),
+            return Dismissible(
+              movementDuration: const Duration(seconds: 2),
+              key: Key(user.userId),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
                 ),
               ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  MyText(
-                    text: user.role.toString().split('.').last,
-                    color: AppColors.textcolor,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      allUsersController.selectUser(user);
-                      Get.toNamed(
-                        AppRoutes.singleUserDetailsScreen,
-                        arguments: user,
-                      );
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: AppColors.textcolor,
+              onDismissed: (direction) async {
+                await allUsersController.deleteUser(user.userId);
+              },
+              child: Card(
+                color: AppColors.background,
+                elevation: 5,
+                child: ListTile(
+                  onTap: () {
+                    allUsersController.selectUser(user);
+                    Get.toNamed(AppRoutes.singleUserDetailsScreen);
+                  },
+                  title: Text(user.fullName),
+                  subtitle: Text(user.email),
+                  leading: CircleAvatar(
+                    backgroundColor: AppColors.secondary,
+                    child: Text(
+                      user.fullName.isNotEmpty
+                          ? user.fullName[0].toUpperCase()
+                          : '',
+                      style: TextStyle(
+                        color: AppColors.background,
+                      ),
                     ),
                   ),
-                ],
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MyText(
+                        text: user.role.toString().split('.').last,
+                        color: AppColors.textcolor,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          allUsersController.selectUser(user);
+                          Get.toNamed(
+                            AppRoutes.singleUserDetailsScreen,
+                            arguments: user,
+                          );
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: AppColors.textcolor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
           },
