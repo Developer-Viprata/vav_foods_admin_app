@@ -19,6 +19,7 @@ abstract class Interfaces {
   //update user
 
   Future<List<UserModel>> updateUserFromFirebase(
+    String userId,
     String fullName,
     String email,
     String phoneNumber,

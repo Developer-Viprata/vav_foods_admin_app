@@ -1,11 +1,14 @@
+// ignore_for_file: unnecessary_null_comparison, prefer_if_null_operators
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vav_foods_admin_app/Presentation/Admin/widgets/my_button.dart';
 import '../../../Constants/colors.dart';
 import '../../../Controllers/all_users_controller.dart';
 import '../../../Data/models/user_model.dart';
+import '../../../Routes/routes.dart';
 import '../widgets/my_app_bar.dart';
+import '../widgets/my_button.dart';
 import '../widgets/my_text.dart';
 import '../widgets/my_textFormField.dart';
 
@@ -40,6 +43,7 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
       // Check if data is still loading
       if (allUsersController.isLoading.value) {
         return Scaffold(
+          backgroundColor: AppColors.background,
           appBar: MyAppBar(title: 'User Details'),
           body: const Center(
             child: CupertinoActivityIndicator(),
@@ -83,6 +87,24 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
                     hintText: 'Phone Number',
                   ),
                   const SizedBox(height: 10),
+                  DropdownButton<UserRole>(
+                    dropdownColor: AppColors.background,
+                    value: allUsersController.selectedRole.value != null
+                        ? allUsersController.selectedRole.value
+                        : UserRole.Admin,
+                    onChanged: (UserRole? newRole) {
+                      if (newRole != null) {
+                        allUsersController.selectedRole(newRole);
+                      }
+                    },
+                    items: UserRole.values.map((UserRole role) {
+                      return DropdownMenuItem<UserRole>(
+                        value: role,
+                        child: MyText(text: role.toString().split('.').last),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 10),
                   CustomTextFormField(
                     controller: allUsersController.userPassword,
                     hintText:
@@ -92,6 +114,13 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
                   MyButton(
                       minWidth: 200,
                       onPressed: () async {
+                        if (allUsersController.userFullName.text.isEmpty ||
+                            allUsersController.userEmail.text.isEmpty ||
+                            allUsersController.userPhoneNumber.text.isEmpty) {
+                          Get.snackbar(
+                              'Error', 'Please fill in all required fields.');
+                          return;
+                        }
                         await allUsersController.updateUserFromFirebase(
                           allUsersController.userFullName.text.trim(),
                           allUsersController.userEmail.text.trim(),
@@ -99,6 +128,8 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
                           allUsersController.userPassword.text.trim(),
                           allUsersController.selectedRole.value,
                         );
+
+                        Get.toNamed(AppRoutes.allUsersScreen);
                       },
                       text: 'Update user'),
                 ],

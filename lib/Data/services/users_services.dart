@@ -8,6 +8,7 @@ import '../interfaces/interfaces.dart';
 class UsersServices implements Interfaces {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   @override
   Future<List<UserModel>> fetchUsersFromFirebase() async {
     List<UserModel> userList = [];
@@ -82,6 +83,7 @@ class UsersServices implements Interfaces {
     }
     return userList;
   }
+/* 
 
   @override
   Future<List<UserModel>> updateUserFromFirebase(
@@ -98,8 +100,8 @@ class UsersServices implements Interfaces {
           .collection('users')
           .doc(firebaseAuth.currentUser!.uid);
 
-      /*    final UserModel userModel = UserModel(
-        userId: userId,
+      final UserModel userModel = UserModel(
+        userId: firebaseAuth.currentUser!.uid,
         fullName: fullName,
         email: email,
         phoneNumber: phoneNumber,
@@ -108,8 +110,8 @@ class UsersServices implements Interfaces {
         createdAt: createdAt,
         updatedAt: updatedAt,
         userDeviceToken: '',
-        userImg: userImg,
-      ); */
+        userImg: '',
+      );
 
       // Update Firestore fields
       await userDoc.update({
@@ -126,6 +128,86 @@ class UsersServices implements Interfaces {
       final User? currentUser = firebaseAuth.currentUser;
       if (currentUser != null &&
           currentUser.uid == firebaseAuth.currentUser!.uid) {
+        if (email != currentUser.email) {
+          await currentUser.updateEmail(email);
+        }
+        if (password.isNotEmpty) {
+          await currentUser.updatePassword(password);
+        }
+      }
+
+      // Fetch updated list of users from Firestore
+      userList = await fetchUsersFromFirebase();
+    } catch (e) {
+      print("Error updating user: $e");
+    }
+    return userList;
+  }
+
+
+ */
+
+  @override
+  Future<List<UserModel>> updateUserFromFirebase(
+    String userId, // Add this parameter
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  ) async {
+    List<UserModel> userList = [];
+
+    // Check if the userId is provided
+    if (userId.isEmpty) {
+      throw Exception("User ID cannot be empty.");
+    }
+
+    try {
+      // Get reference to the user document in Firestore
+      final DocumentReference userDoc = firebaseFirestore
+          .collection('users')
+          .doc(userId); // Use passed userId
+
+      // Fetch existing user data to retain the createdAt timestamp
+      DocumentSnapshot existingUserDoc = await userDoc.get();
+      if (!existingUserDoc.exists) {
+        throw Exception("User does not exist.");
+      }
+
+      Map<String, dynamic> existingUserData =
+          existingUserDoc.data() as Map<String, dynamic>;
+      DateTime createdAt =
+          (existingUserData['createdAt'] as Timestamp).toDate();
+
+      // Prepare updated user model
+      final UserModel updatedUserModel = UserModel(
+        userId: userId,
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+        password: password,
+        role: role,
+        createdAt: createdAt, // Retain original createdAt timestamp
+        updatedAt: DateTime.now(), // Update the updatedAt timestamp
+        userDeviceToken: '',
+        userImg: '',
+      );
+
+      // Update Firestore fields
+      await userDoc.update({
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'phoneNumber': phoneNumber,
+        'role': role.toString().split('.').last,
+        'updatedAt': DateTime.now(), // Only updating updatedAt
+        'userImg': '',
+      });
+
+      // If the email or password has changed, update Firebase Authentication
+      final User? currentUser = firebaseAuth.currentUser;
+      if (currentUser != null && userId == currentUser.uid) {
         if (email != currentUser.email) {
           await currentUser.updateEmail(email);
         }

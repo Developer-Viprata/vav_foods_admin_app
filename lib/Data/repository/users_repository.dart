@@ -31,6 +31,7 @@ class UsersRepository {
   }
 
   Future<List<UserModel>> updateUserFromFirebase(
+    String userId,
     String fullName,
     String email,
     String phoneNumber,
@@ -38,6 +39,7 @@ class UsersRepository {
     UserRole role,
   ) async {
     return await interfaces.updateUserFromFirebase(
+      userId,
       fullName,
       email,
       phoneNumber,

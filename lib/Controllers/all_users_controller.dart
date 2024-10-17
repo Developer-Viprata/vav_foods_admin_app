@@ -13,13 +13,15 @@ class AllUsersController extends GetxController {
   final usersList = <UserModel>[].obs;
 
   //adding for to select single user
-  var selectedUser = Rxn<UserModel>();
-  var selectedRole = UserRole.Admin.obs;
+  // var selectedUser = Rxn<UserModel>();
+  Rx<UserModel?> selectedUser = Rx<UserModel?>(null);
+  // var selectedRole = UserRole.Admin.obs;
+  Rx<UserRole> selectedRole = UserRole.Admin.obs;
 
-  final TextEditingController userFullName = TextEditingController();
-  final TextEditingController userEmail = TextEditingController();
-  final TextEditingController userPhoneNumber = TextEditingController();
-  final TextEditingController userPassword = TextEditingController();
+  TextEditingController userFullName = TextEditingController();
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPhoneNumber = TextEditingController();
+  TextEditingController userPassword = TextEditingController();
 
   @override
   void onInit() {
@@ -58,12 +60,15 @@ class AllUsersController extends GetxController {
   Future<void> fetchUserById(String userId) async {
     try {
       isLoading(true);
-      final user = await usersRepository.fetchsingleUserFromFirebase(userId);
+      // final user = await usersRepository.fetchsingleUserFromFirebase(userId);
+      // Fetch user data
+      UserModel? user =
+          await usersRepository.fetchsingleUserFromFirebase(userId);
       if (user != null) {
         selectedUser.value = user;
-        userFullName.text = user.fullName ?? '';
-        userEmail.text = user.email ?? '';
-        userPhoneNumber.text = user.phoneNumber ?? '';
+        userFullName.text = user.fullName;
+        userEmail.text = user.email;
+        userPhoneNumber.text = user.phoneNumber;
         userPassword.text = user.password ?? '';
         selectedRole.value = user.role ?? UserRole.Admin;
       }
@@ -114,17 +119,30 @@ class AllUsersController extends GetxController {
   ) async {
     try {
       isLoading.value = true;
+
+      if (fullName.isEmpty ||
+          email.isEmpty ||
+          phoneNumber.isEmpty ||
+          role == null ||
+          selectedUser.value == null) {
+        // Check if selectedUser is null
+        throw Exception('Fields cannot be empty');
+      }
+
+      // Pass the selected user's ID to the repository
       await usersRepository.updateUserFromFirebase(
+        selectedUser.value!.userId, // Use the selected user's ID
         fullName,
         email,
         phoneNumber,
         password,
         role,
       );
+
       Get.snackbar('Success', 'Updated user details successfully');
     } catch (e) {
       Get.snackbar("Error", "Failed while updating the user $e");
-      print("Error while update the user: $e");
+      print("Error while updating the user: $e");
     } finally {
       isLoading.value = false;
     }
