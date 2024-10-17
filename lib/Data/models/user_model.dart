@@ -45,17 +45,17 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userId: map['userId'],
-      fullName: map['fullName'],
-      email: map['email'],
-      phoneNumber: map['phoneNumber'],
-      password: map['password'],
+      userId: map['userId'] ?? '',
+      fullName: map['fullName'] ?? '',
+      email: map['email'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      password: map['password'] ?? '',
       role: UserRole.values
           .firstWhere((e) => e.toString().split('.').last == map['role']),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
-      userDeviceToken: map['userDeviceToken'],
-      userImg: map['userImg'],
+      userDeviceToken: map['userDeviceToken'] ?? '',
+      userImg: map['userImg'] ?? '',
       isActive: map['isActive'] ?? true,
     );
   }

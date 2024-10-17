@@ -49,8 +49,11 @@ class UsersServices implements Interfaces {
     List<UserModel> userList = [];
     try {
       // Create user in Firebase Authentication
-      UserCredential userCredential = await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
       // Create user model object
       UserModel newUser = UserModel(
@@ -81,7 +84,66 @@ class UsersServices implements Interfaces {
   }
 
   @override
-  Future<List<UserModel>> deleteUser(String userId) async {
+  Future<List<UserModel>> updateUserFromFirebase(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  ) async {
+    List<UserModel> userList = [];
+    try {
+      // Get reference to user in Firestore
+      final DocumentReference userDoc = firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid);
+
+      /*    final UserModel userModel = UserModel(
+        userId: userId,
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+        password: password,
+        role: role,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        userDeviceToken: '',
+        userImg: userImg,
+      ); */
+
+      // Update Firestore fields
+      await userDoc.update({
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'phoneNumber': phoneNumber,
+        'role': role.toString().split('.').last,
+        'updatedAt': DateTime.now(),
+        'userImg': '',
+      });
+
+      // If the email or password has changed, update Firebase Authentication
+      final User? currentUser = firebaseAuth.currentUser;
+      if (currentUser != null &&
+          currentUser.uid == firebaseAuth.currentUser!.uid) {
+        if (email != currentUser.email) {
+          await currentUser.updateEmail(email);
+        }
+        if (password.isNotEmpty) {
+          await currentUser.updatePassword(password);
+        }
+      }
+
+      // Fetch updated list of users from Firestore
+      userList = await fetchUsersFromFirebase();
+    } catch (e) {
+      print("Error updating user: $e");
+    }
+    return userList;
+  }
+
+  @override
+  Future<List<UserModel>> deleteUserFromFirebase(String userId) async {
     List<UserModel> userList = [];
     try {
       // Delete the user from Firestore

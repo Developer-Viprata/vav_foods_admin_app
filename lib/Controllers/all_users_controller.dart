@@ -9,17 +9,17 @@ class AllUsersController extends GetxController {
   final UsersRepository usersRepository;
   AllUsersController({required this.usersRepository});
 
-  final isLoading = false.obs;
+  var isLoading = true.obs;
   final usersList = <UserModel>[].obs;
 
   //adding for to select single user
   var selectedUser = Rxn<UserModel>();
   var selectedRole = UserRole.Admin.obs;
-/* 
-  TextEditingController userFullName = TextEditingController();
-  TextEditingController userEmail = TextEditingController();
-  TextEditingController userPhoneNumber = TextEditingController();
-  TextEditingController userPassword = TextEditingController(); */
+
+  final TextEditingController userFullName = TextEditingController();
+  final TextEditingController userEmail = TextEditingController();
+  final TextEditingController userPhoneNumber = TextEditingController();
+  final TextEditingController userPassword = TextEditingController();
 
   @override
   void onInit() {
@@ -27,21 +27,51 @@ class AllUsersController extends GetxController {
     fetchUsersFromFirebase();
   }
 
+  @override
+  void onClose() {
+    // Dispose the controllers when the controller is removed from memory
+    userFullName.dispose();
+    userEmail.dispose();
+    userPhoneNumber.dispose();
+    userPassword.dispose();
+    super.onClose();
+  }
+
   Future<void> fetchUsersFromFirebase() async {
     try {
-      isLoading.value = true;
+      // isLoading.value = true;
+      isLoading(true);
+
       final fetchedUsers = await usersRepository.fetchUsersFromFirebase();
-      usersList.value = fetchedUsers;
+      if (fetchedUsers != null && fetchedUsers.isNotEmpty) {
+        usersList.value = fetchedUsers;
+      } else {
+        print("No users fetched");
+      }
     } catch (e) {
       print("Error fetching users: $e");
     } finally {
-      isLoading.value = false;
+      isLoading(false);
     }
   }
 
-  // Set the selected user
-  void selectUser(UserModel user) {
-    selectedUser.value = user;
+  Future<void> fetchUserById(String userId) async {
+    try {
+      isLoading(true);
+      final user = await usersRepository.fetchsingleUserFromFirebase(userId);
+      if (user != null) {
+        selectedUser.value = user;
+        userFullName.text = user.fullName ?? '';
+        userEmail.text = user.email ?? '';
+        userPhoneNumber.text = user.phoneNumber ?? '';
+        userPassword.text = user.password ?? '';
+        selectedRole.value = user.role ?? UserRole.Admin;
+      }
+    } catch (e) {
+      print("Error fetching user: $e");
+    } finally {
+      isLoading(false);
+    }
   }
 
   Future<void> addUsersToFirebase({
@@ -53,28 +83,20 @@ class AllUsersController extends GetxController {
     try {
       isLoading.value = true;
 
-      // Fetch data from the input controllers
-      /*   String fullName = userFullName.text;
-      String email = userEmail.text;
-      String phoneNumber = userPhoneNumber.text;
-      String password = userPassword.text; */
-
-      // Call the repository to add the user
       usersList.value = await usersRepository.addUsersToFirebase(
-        fullName,
-        email,
-        phoneNumber,
-        password,
-        selectedRole.value, // Pass the selected role to the repository
+        userFullName.text.trim(),
+        userEmail.text.trim(),
+        userPhoneNumber.text.trim(),
+        userPassword.text.trim(),
+        selectedRole.value,
       );
 
       Get.snackbar('Success', 'Added user  successfully');
 
-      // Clear the input fields after successful addition
-      /* userFullName.clear();
+      userFullName.clear();
       userEmail.clear();
       userPhoneNumber.clear();
-      userPassword.clear(); */
+      userPassword.clear();
     } catch (e) {
       Get.snackbar("Error", "Failed while adding the user $e");
       print("Error adding user: $e");
@@ -83,12 +105,37 @@ class AllUsersController extends GetxController {
     }
   }
 
-  Future<void> deleteUser(String userId) async {
+  Future<void> updateUserFromFirebase(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  ) async {
+    try {
+      isLoading.value = true;
+      await usersRepository.updateUserFromFirebase(
+        fullName,
+        email,
+        phoneNumber,
+        password,
+        role,
+      );
+      Get.snackbar('Success', 'Updated user details successfully');
+    } catch (e) {
+      Get.snackbar("Error", "Failed while updating the user $e");
+      print("Error while update the user: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> deleteUserFromFirebase(String userId) async {
     try {
       isLoading.value = true;
 
       // Call the repository to delete the user
-      usersList.value = await usersRepository.deleteUser(userId);
+      usersList.value = await usersRepository.deleteUserFromFirebase(userId);
 
       Get.snackbar('Success', 'User deleted successfully');
     } catch (e) {

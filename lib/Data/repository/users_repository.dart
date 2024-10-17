@@ -30,7 +30,23 @@ class UsersRepository {
     );
   }
 
-  Future<List<UserModel>> deleteUser(String userId) async {
-    return await interfaces.deleteUser(userId);
+  Future<List<UserModel>> updateUserFromFirebase(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  ) async {
+    return await interfaces.updateUserFromFirebase(
+      fullName,
+      email,
+      phoneNumber,
+      password,
+      role,
+    );
+  }
+
+  Future<List<UserModel>> deleteUserFromFirebase(String userId) async {
+    return await interfaces.deleteUserFromFirebase(userId);
   }
 }
