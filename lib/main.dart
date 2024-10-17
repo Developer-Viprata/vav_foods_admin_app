@@ -10,18 +10,18 @@ Future<void> main(List<String> args) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(myApp());
+  runApp(MyApp());
 }
 
-class myApp extends StatelessWidget {
-  const myApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: AppBindings(),
-      initialRoute: AppRoutes.mainScreen,
+      initialRoute: AppRoutes.loginScreen,
       getPages: AppRoutes.routes,
     );
   }
