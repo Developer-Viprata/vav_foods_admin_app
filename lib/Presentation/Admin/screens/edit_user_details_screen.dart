@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Constants/colors.dart';
+import '../../../Constants/responsive.dart';
 import '../../../Controllers/all_users_controller.dart';
 import '../../../Data/models/user_model.dart';
 import '../widgets/my_app_bar.dart';
@@ -66,72 +67,88 @@ class _EditUserDetailsScreenState extends State<EditUserDetailsScreen> {
           appBar: MyAppBar(
             title: 'Edit User Details',
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  CustomTextFormField(
-                    controller: allUsersController.userFullName,
-                    hintText: 'Full Name',
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextFormField(
-                    controller: allUsersController.userEmail,
-                    hintText: 'Email',
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextFormField(
-                    controller: allUsersController.userPhoneNumber,
-                    hintText: 'Phone Number',
-                  ),
-                  const SizedBox(height: 10),
-                  DropdownButton<UserRole>(
-                    dropdownColor: AppColors.background,
-                    value: allUsersController.selectedRole.value != null
-                        ? allUsersController.selectedRole.value
-                        : UserRole.Admin,
-                    onChanged: (UserRole? newRole) {
-                      if (newRole != null) {
-                        allUsersController.selectedRole(newRole);
-                      }
-                    },
-                    items: UserRole.values.map((UserRole role) {
-                      return DropdownMenuItem<UserRole>(
-                        value: role,
-                        child: MyText(text: role.toString().split('.').last),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextFormField(
-                    controller: allUsersController.userPassword,
-                    hintText:
-                        'Password', // Consider handling password updates separately
-                  ),
-                  const SizedBox(height: 20),
-                  MyButton(
-                      minWidth: 200,
-                      onPressed: () async {
-                        if (allUsersController.userFullName.text.isEmpty ||
-                            allUsersController.userEmail.text.isEmpty ||
-                            allUsersController.userPhoneNumber.text.isEmpty) {
-                          Get.snackbar(
-                              'Error', 'Please fill in all required fields.');
-                          return;
-                        }
-                        await allUsersController.updateUserFromFirebase(
-                          allUsersController.userFullName.text.trim(),
-                          allUsersController.userEmail.text.trim(),
-                          allUsersController.userPhoneNumber.text.trim(),
-                          allUsersController.userPassword.text.trim(),
-                          allUsersController.selectedRole.value,
-                        );
+          body: Center(
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: Responsive.isDesktop(context) ||
+                          Responsive.isDesktopLarge(context)
+                      ? MediaQuery.of(context).size.width * .4
+                      : Responsive.isTablet(context)
+                          ? MediaQuery.of(context).size.width * .7
+                          : Responsive.isMobile(context)
+                              ? MediaQuery.of(context).size.width * 1
+                              : MediaQuery.of(context).size.width * .9,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                        controller: allUsersController.userFullName,
+                        hintText: 'Full Name',
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        controller: allUsersController.userEmail,
+                        hintText: 'Email',
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        controller: allUsersController.userPhoneNumber,
+                        hintText: 'Phone Number',
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<UserRole>(
+                        dropdownColor: AppColors.background,
+                        value: allUsersController.selectedRole.value != null
+                            ? allUsersController.selectedRole.value
+                            : UserRole.Admin,
+                        onChanged: (UserRole? newRole) {
+                          if (newRole != null) {
+                            allUsersController.selectedRole(newRole);
+                          }
+                        },
+                        items: UserRole.values.map((UserRole role) {
+                          return DropdownMenuItem<UserRole>(
+                            value: role,
+                            child:
+                                MyText(text: role.toString().split('.').last),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomTextFormField(
+                        controller: allUsersController.userPassword,
+                        hintText:
+                            'Password', // Consider handling password updates separately
+                      ),
+                      const SizedBox(height: 20),
+                      MyButton(
+                          minWidth: 200,
+                          onPressed: () async {
+                            if (allUsersController.userFullName.text.isEmpty ||
+                                allUsersController.userEmail.text.isEmpty ||
+                                allUsersController
+                                    .userPhoneNumber.text.isEmpty) {
+                              Get.snackbar('Error',
+                                  'Please fill in all required fields.');
+                              return;
+                            }
+                            await allUsersController.updateUserFromFirebase(
+                              allUsersController.userFullName.text.trim(),
+                              allUsersController.userEmail.text.trim(),
+                              allUsersController.userPhoneNumber.text.trim(),
+                              allUsersController.userPassword.text.trim(),
+                              allUsersController.selectedRole.value,
+                            );
 
-                        // Get.toNamed(AppRoutes.allUsersScreen);
-                      },
-                      text: 'Update user'),
-                ],
+                            // Get.toNamed(AppRoutes.allUsersScreen);
+                          },
+                          text: 'Update user'),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),

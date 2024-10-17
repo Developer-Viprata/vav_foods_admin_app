@@ -19,10 +19,6 @@ class AddUserScreen extends StatefulWidget {
 
 class _AddUserScreenState extends State<AddUserScreen> {
   final AllUsersController allUsersController = Get.find<AllUsersController>();
-/*   TextEditingController userFullName = TextEditingController();
-  TextEditingController userEmail = TextEditingController();
-  TextEditingController userPhoneNumber = TextEditingController();
-  TextEditingController userPassword = TextEditingController(); */
 
   final _formKey = GlobalKey<FormState>(); // Form key for validation
 
