@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vav_foods_admin_app/Presentation/Admin/widgets/my_button.dart';
+import 'package:vav_foods_admin_app/Presentation/Admin/widgets/my_text.dart';
 import '../../../Constants/colors.dart';
 import '../../../Constants/responsive.dart';
 import '../../../Controllers/all_users_controller.dart';
@@ -18,10 +19,10 @@ class AddUserScreen extends StatefulWidget {
 
 class _AddUserScreenState extends State<AddUserScreen> {
   final AllUsersController allUsersController = Get.find<AllUsersController>();
-  TextEditingController userFullName = TextEditingController();
+/*   TextEditingController userFullName = TextEditingController();
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPhoneNumber = TextEditingController();
-  TextEditingController userPassword = TextEditingController();
+  TextEditingController userPassword = TextEditingController(); */
 
   final _formKey = GlobalKey<FormState>(); // Form key for validation
 
@@ -52,7 +53,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomTextFormField(
-                        controller: /* allUsersController. */ userFullName,
+                        controller: allUsersController.userFullName,
                         hintText: 'Full Name',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -63,7 +64,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(
-                        controller: /* allUsersController. */ userEmail,
+                        controller: allUsersController.userEmail,
                         hintText: 'Email',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -74,7 +75,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(
-                        controller: /* allUsersController. */ userPhoneNumber,
+                        controller: allUsersController.userPhoneNumber,
                         hintText: 'Phone Number',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -96,14 +97,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
                           items: UserRole.values.map((UserRole role) {
                             return DropdownMenuItem<UserRole>(
                               value: role,
-                              child: Text(role.toString().split('.').last),
+                              child:
+                                  MyText(text: role.toString().split('.').last),
                             );
                           }).toList(),
                         ),
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(
-                        controller: /* allUsersController. */ userPassword,
+                        controller: allUsersController.userPassword,
                         hintText: 'Password',
                         obscureText: true, // Hide password
                         validator: (value) {
@@ -121,27 +123,21 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                 minWidth: 200,
                                 text: 'Add User',
                                 onPressed: () async {
-                                  /* if (_formKey.currentState!.validate()) {
-                            // Add user to Firebase if validation passes
-                            await allUsersController.addUsersToFirebase(
-                              allUsersController.userFullName.text,
-                              allUsersController.userEmail.text,
-                              allUsersController.userPhoneNumber.text,
-                              allUsersController.userPassword.text,
-                            );
-                          } */
-
-                                  await allUsersController.addUsersToFirebase(
-                                    fullName: userFullName.text.trim(),
-                                    email: userEmail.text.trim(),
-                                    phoneNumber: userPhoneNumber.text.trim(),
-                                    password: userPassword.text.trim(),
-                                  );
-
-                                  userFullName.clear();
-                                  userEmail.clear();
-                                  userPhoneNumber.clear();
-                                  userPassword.clear();
+                                  if (_formKey.currentState!.validate()) {
+                                    await allUsersController.addUsersToFirebase(
+                                      fullName: allUsersController
+                                          .userFullName.text
+                                          .trim(),
+                                      email: allUsersController.userEmail.text
+                                          .trim(),
+                                      phoneNumber: allUsersController
+                                          .userPhoneNumber.text
+                                          .trim(),
+                                      password: allUsersController
+                                          .userPassword.text
+                                          .trim(),
+                                    );
+                                  }
                                 },
                               ),
                       ),

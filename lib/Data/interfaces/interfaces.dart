@@ -16,5 +16,16 @@ abstract class Interfaces {
     UserRole role,
   );
 
-  Future<List<UserModel>> deleteUser(String userId);
+  //update user
+
+  Future<List<UserModel>> updateUserFromFirebase(
+    String fullName,
+    String email,
+    String phoneNumber,
+    String password,
+    UserRole role,
+  );
+
+//delete user
+  Future<List<UserModel>> deleteUserFromFirebase(String userId);
 }

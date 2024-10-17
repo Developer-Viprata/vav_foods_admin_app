@@ -17,6 +17,7 @@ class AllUsersScreen extends StatefulWidget {
 
 class _AllUsersScreenState extends State<AllUsersScreen> {
   final AllUsersController allUsersController = Get.find<AllUsersController>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -66,15 +67,17 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                 ),
               ),
               onDismissed: (direction) async {
-                await allUsersController.deleteUser(user.userId);
+                await allUsersController.deleteUserFromFirebase(user.userId);
               },
               child: Card(
                 color: AppColors.background,
                 elevation: 5,
                 child: ListTile(
-                  onTap: () {
-                    allUsersController.selectUser(user);
-                    Get.toNamed(AppRoutes.singleUserDetailsScreen);
+                  onTap: () async {
+                    // allUsersController.selectUser(user);
+                    // await allUsersController.fetchUserById(user.userId);
+                    Get.toNamed(AppRoutes.singleUserDetailsScreen,
+                        arguments: user);
                   },
                   title: Text(user.fullName),
                   subtitle: Text(user.email),
@@ -101,9 +104,8 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                       ),
                       IconButton(
                         onPressed: () {
-                          allUsersController.selectUser(user);
                           Get.toNamed(
-                            AppRoutes.singleUserDetailsScreen,
+                            AppRoutes.editUserDetailsScreen,
                             arguments: user,
                           );
                         },
