@@ -73,7 +73,7 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
 
-            //products
+            //users
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -96,28 +96,28 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
 
-            //orders
-            /*  Padding(
+            //categories
+            Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
               child: ListTile(
-                onTap: () => Get.toNamed(AppRoutes.allOrdersScreen),
+                onTap: () => Get.toNamed(AppRoutes.addCategoriesScreen),
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
-                  text: "Orders",
-                  color: AppConstant.appTextColor,
+                  text: "Categories",
+                  color: AppColors.background,
                 ),
                 leading: Icon(
                   Icons.shopping_bag,
-                  color: AppConstant.appTextColor,
+                  color: AppColors.background,
                 ),
                 /* trailing: Icon(
                   Icons.arrow_forward,
                   color: AppConstant.appTextColor,
                 ), */
               ),
-            ), */
+            ),
             //contact
             /*  Padding(
               padding: const EdgeInsets.symmetric(

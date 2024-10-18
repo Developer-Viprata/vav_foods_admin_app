@@ -1,6 +1,12 @@
 import 'package:get/get.dart';
+import 'package:vav_foods_admin_app/Data/interfaces/categories_interfaces.dart';
+import 'package:vav_foods_admin_app/Data/services/categories_services.dart';
+import '../Controllers/all_categories_controller.dart';
 import '../Controllers/all_users_controller.dart';
+import '../Controllers/get_auto_id_controller.dart';
+import '../Controllers/pick_image_controller.dart';
 import '../Data/interfaces/interfaces.dart';
+import '../Data/repository/category_repository.dart';
 import '../Data/repository/users_repository.dart';
 import '../Data/services/users_services.dart';
 
@@ -14,5 +20,16 @@ class AppBindings extends Bindings {
 
     Get.lazyPut<AllUsersController>(
         () => AllUsersController(usersRepository: Get.find<UsersRepository>()));
+    Get.lazyPut<GetAutoIdController>(() => GetAutoIdController());
+    //category repo
+    Get.lazyPut<CategoryRepository>(
+        () => CategoryRepository(interfaces: Get.find<CategoriesInterfaces>()));
+    //category interfaces
+    Get.lazyPut<CategoriesInterfaces>(() => CategoriesServices());
+    //all categories controller
+    Get.lazyPut<AllCategoriesController>(() => AllCategoriesController(
+        categoryRepository: Get.find<CategoryRepository>()));
+//image picker
+    Get.lazyPut<PickImagesController>(() => PickImagesController());
   }
 }

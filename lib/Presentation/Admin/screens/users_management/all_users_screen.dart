@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Constants/colors.dart';
-import '../../../Constants/responsive.dart';
-import '../../../Controllers/all_users_controller.dart';
-import '../../../Routes/routes.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/my_drawer.dart';
-import '../widgets/my_text.dart';
+import '../../../../Constants/colors.dart';
+import '../../../../Constants/responsive.dart';
+import '../../../../Controllers/all_users_controller.dart';
+import '../../../../Routes/routes.dart';
+import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_drawer.dart';
+import '../../widgets/my_text.dart';
 
 class AllUsersScreen extends StatefulWidget {
   const AllUsersScreen({super.key});

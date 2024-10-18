@@ -3,11 +3,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Constants/colors.dart';
-import '../../../Controllers/all_users_controller.dart';
-import '../../../Data/models/user_model.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/my_text.dart';
+import '../../../../Constants/colors.dart';
+import '../../../../Controllers/all_users_controller.dart';
+import '../../../../Data/models/user_model.dart';
+import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_text.dart';
 
 class SingleUserDetailsScreen extends StatefulWidget {
   @override

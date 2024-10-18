@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vav_foods_admin_app/Presentation/Admin/widgets/my_button.dart';
 import 'package:vav_foods_admin_app/Presentation/Admin/widgets/my_text.dart';
-import '../../../Constants/colors.dart';
-import '../../../Constants/responsive.dart';
-import '../../../Controllers/all_users_controller.dart';
-import '../../../Data/models/user_model.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/my_textFormField.dart';
+import '../../../../Constants/colors.dart';
+import '../../../../Constants/responsive.dart';
+import '../../../../Controllers/all_users_controller.dart';
+import '../../../../Data/models/user_model.dart';
+import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_textFormField.dart';
 
 class AddUserScreen extends StatefulWidget {
   const AddUserScreen({super.key});

@@ -96,7 +96,7 @@ class AllUsersController extends GetxController {
         selectedRole.value,
       );
 
-      Get.snackbar('Success', 'Added user  successfully');
+      Get.snackbar('Success', 'Added user successfully');
 
       userFullName.clear();
       userEmail.clear();
