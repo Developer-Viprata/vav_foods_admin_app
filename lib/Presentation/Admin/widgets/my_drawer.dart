@@ -102,7 +102,7 @@ class MyDrawer extends StatelessWidget {
                 horizontal: 20,
               ),
               child: ListTile(
-                onTap: () => Get.toNamed(AppRoutes.addCategoriesScreen),
+                onTap: () => Get.toNamed(AppRoutes.allCategoriesScreen),
                 titleAlignment: ListTileTitleAlignment.center,
                 title: MyText(
                   text: "Categories",

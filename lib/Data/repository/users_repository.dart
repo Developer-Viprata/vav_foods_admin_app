@@ -1,6 +1,6 @@
 import 'package:vav_foods_admin_app/Data/models/user_model.dart';
 
-import '../interfaces/interfaces.dart';
+import '../interfaces/users_interfaces.dart';
 
 class UsersRepository {
   final Interfaces interfaces;

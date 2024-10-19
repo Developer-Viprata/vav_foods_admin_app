@@ -1,5 +1,3 @@
-import 'package:vav_foods_admin_app/Data/models/category_model.dart';
-
 import '../models/user_model.dart';
 
 abstract class Interfaces {

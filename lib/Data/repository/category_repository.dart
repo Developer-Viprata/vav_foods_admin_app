@@ -1,11 +1,19 @@
-import 'package:vav_foods_admin_app/Data/interfaces/categories_interfaces.dart';
-import 'package:vav_foods_admin_app/Data/models/category_model.dart';
+import 'package:image_picker/image_picker.dart';
+import '../interfaces/categories_interfaces.dart';
+import '../models/category_model.dart';
 
 class CategoryRepository {
   final CategoriesInterfaces interfaces;
 
   CategoryRepository({required this.interfaces});
 
+  //fetch
+
+  Future<List<CategoryModel>> fetchCategoriesFromFirebase() async {
+    return interfaces.fetchCategoriesFromFirebase();
+  }
+
+  //add
   Future<List<CategoryModel>> addCategoriesToFirebase(
     String categoryName,
     String categoryDescription,
@@ -16,5 +24,16 @@ class CategoryRepository {
       categoryDescription,
       categoryImg,
     );
+  }
+
+  //single category
+  Future<CategoryModel?> fetchsingleCategoryFromFirebase(
+      String categoryId) async {
+    return await interfaces.fetchsingleCategoryFromFirebase(categoryId);
+  }
+
+  //store
+  Future<String> uploadCategoryImageToStorage(XFile image) async {
+    return interfaces.uploadCategoryImageToStorage(image);
   }
 }

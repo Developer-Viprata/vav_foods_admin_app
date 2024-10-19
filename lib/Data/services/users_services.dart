@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vav_foods_admin_app/Data/models/user_model.dart';
-import '../interfaces/interfaces.dart';
+import '../interfaces/users_interfaces.dart';
 
 class UsersServices implements Interfaces {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
