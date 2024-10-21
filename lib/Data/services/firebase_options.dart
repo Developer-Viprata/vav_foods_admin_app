@@ -47,21 +47,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBaMUDAm5QxY-Qpt_tOw1O5ZnF94KUtJMU',
-    appId: '1:44757863823:web:3c462da984158911974ffa',
-    messagingSenderId: '44757863823',
-    projectId: 'vavfoods-30f66',
-    authDomain: 'vavfoods-30f66.firebaseapp.com',
-    storageBucket: 'vavfoods-30f66.appspot.com',
-    measurementId: 'G-7CRXQMGZ32',
+    apiKey: 'AIzaSyAvoh6nUlOAJ_PCEaKl_szkb8xk4IcBrQ8',
+    appId: '1:859855887043:web:c82f51ca9761ef2b99e076',
+    messagingSenderId: '859855887043',
+    projectId: 'grocery-app-6ddc9',
+    authDomain: 'grocery-app-6ddc9.firebaseapp.com',
+    storageBucket: 'grocery-app-6ddc9.appspot.com',
+    measurementId: 'G-3Q5S6GKCG5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAYy7G1LHXpsdFi-ZgFoLXBFcuK423RQ7E',
-    appId: '1:44757863823:android:89adf5a8ed875f43974ffa',
-    messagingSenderId: '44757863823',
-    projectId: 'vavfoods-30f66',
-    storageBucket: 'vavfoods-30f66.appspot.com',
+    apiKey: 'AIzaSyD02cuYdBy_fYP74ydS7TmWeHG10Mm95sQ',
+    appId: '1:859855887043:android:5e7355d8136698c099e076',
+    messagingSenderId: '859855887043',
+    projectId: 'grocery-app-6ddc9',
+    storageBucket: 'grocery-app-6ddc9.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

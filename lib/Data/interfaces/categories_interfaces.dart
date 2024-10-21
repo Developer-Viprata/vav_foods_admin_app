@@ -15,6 +15,18 @@ abstract class CategoriesInterfaces {
   Future<CategoryModel?> fetchsingleCategoryFromFirebase(String categoryId);
 //store
   Future<String> uploadCategoryImageToStorage(XFile image);
+
+  //edit
+  Future<List<CategoryModel>> updateCategoryFromFirebase(
+    String categoryId,
+    String categoryName,
+    String categoryDescription,
+    String categoryImg,
+  );
+
+  //deleteimage form storagee
+  Future<String> deleteImageFromStorage(String imageUrl);
+
 //delete
   Future<List<CategoryModel>> deleteCategoryFromFirebase(String categoryId);
 }

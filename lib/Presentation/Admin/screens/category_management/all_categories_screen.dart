@@ -63,43 +63,68 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 );
               }
               return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   itemCount: allCategoriesController.categoriesList.length,
                   itemBuilder: (context, index) {
                     final category =
                         allCategoriesController.categoriesList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      child: Card(
-                        color: AppColors.background,
-                        elevation: 5,
-                        child: ListTile(
-                          onTap: () async {
-                            Get.toNamed(
-                              AppRoutes.singleCategoryDetailsScreen,
-                              arguments: category,
-                            );
-                          },
-                          leading: ClipRRect(
-                            child: CachedNetworkImage(
-                              height: 100,
-                              width: 100,
-                              imageUrl: category.categoryImg,
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                      const CupertinoActivityIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                    return Dismissible(
+                      key: Key(category.categoryId),
+                      movementDuration: const Duration(seconds: 2),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onDismissed: (direction) async {
+                        await allCategoriesController
+                            .deleteCategoryFromFirebase(category.categoryId);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        child: Card(
+                          color: AppColors.background,
+                          elevation: 5,
+                          child: ListTile(
+                            onTap: () async {
+                              Get.toNamed(
+                                AppRoutes.singleCategoryDetailsScreen,
+                                arguments: category,
+                              );
+                            },
+                            leading: ClipRRect(
+                              child: CachedNetworkImage(
+                                height: 100,
+                                width: 100,
+                                imageUrl: category.categoryImg,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        const CupertinoActivityIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
+                            title:
+                                MyText(text: "name: ${category.categoryName}"),
+                            subtitle: MyText(
+                                text: "des: ${category.categoryDescription}"),
+                            trailing: IconButton(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    AppRoutes.editCategoriesScreen,
+                                    arguments: category,
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                )),
                           ),
-                          title: MyText(text: "name: ${category.categoryName}"),
-                          subtitle: MyText(
-                              text: "des: ${category.categoryDescription}"),
-                          trailing: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.edit,
-                              )),
                         ),
                       ),
                     );

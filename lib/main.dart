@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'Bindings/bindings.dart';
-import 'Data/firebase_options.dart';
+import 'Data/services/firebase_options.dart';
 import 'Routes/routes.dart';
 
 Future<void> main(List<String> args) async {

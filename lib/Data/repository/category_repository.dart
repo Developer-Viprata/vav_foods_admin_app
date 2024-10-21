@@ -37,6 +37,29 @@ class CategoryRepository {
     return interfaces.uploadCategoryImageToStorage(image);
   }
 
+  //update
+
+  Future<List<CategoryModel>> updateCategoryFromFirebase(
+    String categoryId,
+    String categoryName,
+    String categoryDescription,
+    String categoryImg,
+  ) async {
+    return interfaces.updateCategoryFromFirebase(
+      categoryId,
+      categoryName,
+      categoryDescription,
+      categoryImg,
+    );
+  }
+  //delete images form strorage
+
+  Future<String> deleteImageFromStorage(String imageUrl) async {
+    return interfaces.deleteImageFromStorage(imageUrl);
+  }
+
+  //delete
+
   Future<List<CategoryModel>> deleteUserFromFirebase(String categoryId) async {
     return await interfaces.deleteCategoryFromFirebase(categoryId);
   }
