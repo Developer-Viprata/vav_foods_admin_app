@@ -102,4 +102,75 @@ class CategoriesServices implements CategoriesInterfaces {
 
     return await reference.ref.getDownloadURL();
   }
+
+  /*  @override
+  Future<List<CategoryModel>> deleteCategoryFromFirebase(
+      String categoryId) async {
+    List<CategoryModel> categoriesList = [];
+    try {
+      DocumentSnapshot categorySnapshot = await firebaseFirestore
+          .collection("categories")
+          .doc(categoryId)
+          .get();
+
+      if (categorySnapshot.exists) {
+        print("Deleting category: ${categorySnapshot.data()}");
+
+        await firebaseFirestore
+            .collection("categories")
+            .doc(categoryId)
+            .delete();
+      } else {
+        print("Category does not exist");
+      }
+    } catch (e) {
+      print("Error in deleting the category $e");
+    }
+    return categoriesList;
+  } */
+
+//  delete the images along with the category from the Storage and firestore
+
+  @override
+  Future<List<CategoryModel>> deleteCategoryFromFirebase(
+      String categoryId) async {
+    List<CategoryModel> categoriesList = [];
+    try {
+      DocumentSnapshot categorySnapshot = await firebaseFirestore
+          .collection("categories")
+          .doc(categoryId)
+          .get();
+
+      if (categorySnapshot.exists) {
+        String imageUrl = categorySnapshot['imageUrl'];
+
+        print("Deleting category: ${categorySnapshot.data()}");
+
+        if (imageUrl.isNotEmpty) {
+          try {
+            await firebaseStorage.refFromURL(imageUrl).delete();
+            print("Category image deleted successfully.");
+          } catch (e) {
+            print("Error deleting category image from storage: $e");
+          }
+        }
+
+        // Delete the category document from Firestore
+        await firebaseFirestore
+            .collection("categories")
+            .doc(categoryId)
+            .delete();
+        print("Category data deleted from Firestore.");
+      } else {
+        print("Category does not exist");
+      }
+    } catch (e) {
+      print("Error in deleting the category $e");
+    }
+
+    // You can fetch updated categories list after deletion, if needed
+    categoriesList = await fetchCategoriesFromFirebase();
+
+    return categoriesList;
+  }
 }

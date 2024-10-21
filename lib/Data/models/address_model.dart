@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AddressModel {
   String addressLine1;
   String addressLine2;
@@ -6,6 +8,8 @@ class AddressModel {
   String state;
   String country;
   String zipCode;
+  Timestamp createdAt;
+  Timestamp updatedAt;
 
   AddressModel({
     required this.addressLine1,
@@ -15,10 +19,12 @@ class AddressModel {
     required this.state,
     required this.country,
     required this.zipCode,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  // Convert AddressModel to JSON
-  Map<String, dynamic> toJson() {
+  // Convert AddressModel to map
+  Map<String, dynamic> toMap() {
     return {
       'addressLine1': addressLine1,
       'addressLine2': addressLine2,
@@ -27,19 +33,27 @@ class AddressModel {
       'state': state,
       'country': country,
       'zipCode': zipCode,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
-  // Create AddressModel from JSON
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
+  // Create AddressModel from map
+  factory AddressModel.fromMap(Map<String, dynamic> map) {
     return AddressModel(
-      addressLine1: json['addressLine1'] ?? '',
-      addressLine2: json['addressLine2'] ?? '',
-      street: json['street'] ?? '',
-      city: json['city'] ?? '',
-      state: json['state'] ?? '',
-      country: json['country'] ?? '',
-      zipCode: json['zipCode'] ?? '',
+      addressLine1: map['addressLine1'] ?? '',
+      addressLine2: map['addressLine2'] ?? '',
+      street: map['street'] ?? '',
+      city: map['city'] ?? '',
+      state: map['state'] ?? '',
+      country: map['country'] ?? '',
+      zipCode: map['zipCode'] ?? '',
+      createdAt: map['createdAt'] is Timestamp
+          ? map['createdAt'] as Timestamp
+          : Timestamp.now(),
+      updatedAt: map['updatedAt'] is Timestamp
+          ? map['updatedAt'] as Timestamp
+          : Timestamp.now(),
     );
   }
 }

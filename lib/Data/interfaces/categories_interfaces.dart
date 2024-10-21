@@ -1,5 +1,4 @@
 import 'package:image_picker/image_picker.dart';
-
 import '../models/category_model.dart';
 
 abstract class CategoriesInterfaces {
@@ -16,4 +15,6 @@ abstract class CategoriesInterfaces {
   Future<CategoryModel?> fetchsingleCategoryFromFirebase(String categoryId);
 //store
   Future<String> uploadCategoryImageToStorage(XFile image);
+//delete
+  Future<List<CategoryModel>> deleteCategoryFromFirebase(String categoryId);
 }

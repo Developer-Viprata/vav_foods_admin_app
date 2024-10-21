@@ -1,8 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controllers/all_users_controller.dart';
 import '../../../../Data/models/user_model.dart';
@@ -31,6 +33,11 @@ class _SingleUserDetailsScreenState extends State<SingleUserDetailsScreen> {
         allUsersController.fetchUserById(userId!);
       });
     }
+  }
+
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
 
   @override
@@ -71,9 +78,11 @@ class _SingleUserDetailsScreenState extends State<SingleUserDetailsScreen> {
                     MyText(
                         text: 'Role: ${user.role.toString().split('.').last}'),
                     const SizedBox(height: 10),
-                    MyText(text: 'Created At: ${user.createdAt}'),
+                    MyText(
+                        text: 'Created At: ${formatTimestamp(user.createdAt)}'),
                     const SizedBox(height: 10),
-                    MyText(text: 'Updated At: ${user.updatedAt}'),
+                    MyText(
+                        text: 'Updated At: ${formatTimestamp(user.updatedAt)}'),
                   ],
                 ),
               ),

@@ -36,4 +36,8 @@ class CategoryRepository {
   Future<String> uploadCategoryImageToStorage(XFile image) async {
     return interfaces.uploadCategoryImageToStorage(image);
   }
+
+  Future<List<CategoryModel>> deleteUserFromFirebase(String categoryId) async {
+    return await interfaces.deleteCategoryFromFirebase(categoryId);
+  }
 }

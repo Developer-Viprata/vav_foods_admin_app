@@ -65,16 +65,11 @@ class UsersServices implements Interfaces {
         role: role, // Assign default role
         userDeviceToken: '',
         userImg: '',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
         password: password,
       );
 
-      // Save user data in Firestore
-      /* await firebaseFirestore
-          .collection('users')
-          .doc(newUser.userId)
-          .set(newUser.toMap()); */
       // Save user data in Firestore with server-side timestamps
       await firebaseFirestore.collection('users').doc(newUser.userId).set({
         ...newUser.toMap(),
@@ -119,15 +114,16 @@ class UsersServices implements Interfaces {
       if (!existingUserDoc.exists) {
         throw Exception("User does not exist.");
       }
+      //esxisting usre data
 
       Map<String, dynamic> existingUserData =
           existingUserDoc.data() as Map<String, dynamic>;
-      DateTime createdAt; // Check if createdAt is a Timestamp or a String
+
+      Timestamp createdAt; // Keep as Timestamp
+
+      //getting the existing user TimeStamp
       if (existingUserData['createdAt'] is Timestamp) {
-        createdAt = (existingUserData['createdAt'] as Timestamp).toDate();
-      } else if (existingUserData['createdAt'] is String) {
-        createdAt = DateTime.parse(
-            existingUserData['createdAt']); // Convert String to DateTime
+        createdAt = existingUserData['createdAt'] as Timestamp;
       } else {
         throw Exception("Invalid createdAt format.");
       }
@@ -141,7 +137,7 @@ class UsersServices implements Interfaces {
         password: password,
         role: role,
         createdAt: createdAt, // Retain original createdAt timestamp
-        updatedAt: DateTime.now(), // Update the updatedAt timestamp
+        updatedAt: Timestamp.now(), // Update the updatedAt timestamp
         userDeviceToken: '',
         userImg: '',
       );
@@ -153,7 +149,7 @@ class UsersServices implements Interfaces {
         'password': password,
         'phoneNumber': phoneNumber,
         'role': role.toString().split('.').last,
-        'updatedAt': DateTime.now(), // Only updating updatedAt
+        'updatedAt': Timestamp.now(), // Only updating updatedAt
         'userImg': '',
       });
 
